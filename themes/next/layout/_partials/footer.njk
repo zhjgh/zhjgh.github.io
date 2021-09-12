@@ -10,6 +10,10 @@
   </div>
 {%- endif %}
 
+{% if theme.footer.counter %}
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+{% endif %}
+
 <div class="copyright">
   {% set copyright_year = date(null, 'YYYY') %}
   &copy; {% if theme.footer.since and theme.footer.since != copyright_year %}{{ theme.footer.since }} – {% endif %}

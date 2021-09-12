@@ -49,6 +49,8 @@ language_switcher: false
 footer:
   # Specify the date when the site was setup. If not defined, current year will be used.
   #since: 2015
+  # 统计
+  counter: true
 
   # Icon between year and copyright info.
   icon:
@@ -111,7 +113,6 @@ darkmode: false
 # External url should start with http:// or https://
 menu:
   home: / || fa fa-home
-  favorite: /categories/favorite/ || fa fa-star
   # about: /about/ || fa fa-user
   # tags: /tags/ || fa fa-tags
   # categories: /categories/ || fa fa-th
@@ -690,7 +691,7 @@ firestore:
 # Show Views / Visitors of the website / page with busuanzi.
 # Get more information on http://ibruce.info/2015/04/04/busuanzi
 busuanzi_count:
-  enable: false
+  enable: true
   total_visitors: true
   total_visitors_icon: fa fa-user
   total_views: true

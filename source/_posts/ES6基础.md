@@ -1,5 +1,6 @@
 ---
 title: ES6基础
+date: 2021-06-12
 ---
 
 ## ECMAScript 6 简介
