@@ -271,3 +271,87 @@ console.log(obj.b.c) // 2
 
 # 原型和原型链
 每个实例对象都有一个私有属性__proto__，指向它的构造函数的原型对象（prototype）。原型对象也有自己的__proto__，层层向上直到一个对象的原型对象为null。这一层层原型就是原型链。
+
+# 继承（原型继承和Class继承）
+
+## 组合继承
+```js
+function Parent(value){
+    this.val = value
+}
+Parent.prototype.getValue = function(){
+    console.log(this.val)
+}
+function Child(value){
+    Parent.call(this, value)
+}
+Child.prototype = new Parent()
+
+const child = new Child(1)
+console.log(child.getValue()) // 1
+console.log(child instanceof Parent) // true
+```
+
+原理：
+1、子类的构造函数中通过Parent.call(this)继承父类中的属性
+2、改变子类的原型为new Parent()类继承父类中的函数
+
+优点：
+1、构造函数可以传参，不会与父类引用属性共享
+2、可以复用父类的函数
+
+缺点：继承父类函数的时候调用了父类构造函数，导致子类的原型上多了不需要的父类属性，存在内存上的浪费。
+
+## 寄生组合继承
+```js
+function Parent(value){
+    this.val = value
+}
+Parent.prototype.getValue = function(){
+    console.log(this.val)
+}
+function Child(value){
+    Parent.call(this, value)
+}
+Child.prototype = Object.create(Parent.prototype, {
+    constructor: {
+        value: Child,
+        enumerable: false,
+        writable: true,
+        configurable: true
+    }
+})
+
+const child = new Child(1)
+console.log(child.getValue()) // 1
+console.log(child instanceof Parent) // true
+```
+
+原理：
+1、将父类的原型赋值给了子类
+2、将构造函数设置为子类
+
+优点：
+1、解决了无用的父类属性问题
+2、还能正确找到子类的构造函数
+
+## Class 继承
+```js
+class Parent{
+    constructor(value){
+        this.val = value
+    }
+    getValue(){
+        console.log(this.val)
+    }
+}
+class Child extends Parent{
+    constructor(value){
+        super(value)
+    }
+}
+
+const child = new Child(1)
+console.log(child.getValue()) // 1
+console.log(child instanceof Parent) // true
+```
