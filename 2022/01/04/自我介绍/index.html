@@ -22,19 +22,19 @@
     var CONFIG = {"hostname":"zhjgh.github.io","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1. 实现一个 new 操作符1234567891011121314function New(func) &amp;#123;  var res &#x3D; &amp;#123;&amp;#125;;  if (func.prototype !&#x3D;&#x3D; null) &amp;#123;    res.__proto__ &#x3D; func.prototype;  &amp;#125;  var ret &#x3D; func.apply(res, Array.pr">
+  <meta name="description" content="面试官您好，我叫张鸿杰。目前在三七互娱妙小程担任前端开发主管。妙小程是三七在2020年收购的，一家做在线编程教育的公司，现在也是三七其中的一个事业群。前端加上我有8个人，在我来之前主要是以vue为主，目前的话vue和react都有使用。 1、制定了前端开发标准和规范2、短链3、引入sentry上报客户端异常和错误4、微信开发本地授权问题5、耕子3.0重构项目使用react hooks和ts6、提出">
 <meta property="og:type" content="article">
-<meta property="og:title" content="「中高级前端面试」JavaScript 手写代码无敌秘籍">
-<meta property="og:url" content="https://zhjgh.github.io/2021/05/01/%E3%80%8C%E4%B8%AD%E9%AB%98%E7%BA%A7%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E3%80%8DJavaScript%20%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E6%97%A0%E6%95%8C%E7%A7%98%E7%B1%8D/index.html">
+<meta property="og:title" content="自我介绍">
+<meta property="og:url" content="https://zhjgh.github.io/2022/01/04/%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/index.html">
 <meta property="og:site_name" content="爱折腾的前端">
-<meta property="og:description" content="1. 实现一个 new 操作符1234567891011121314function New(func) &amp;#123;  var res &#x3D; &amp;#123;&amp;#125;;  if (func.prototype !&#x3D;&#x3D; null) &amp;#123;    res.__proto__ &#x3D; func.prototype;  &amp;#125;  var ret &#x3D; func.apply(res, Array.pr">
+<meta property="og:description" content="面试官您好，我叫张鸿杰。目前在三七互娱妙小程担任前端开发主管。妙小程是三七在2020年收购的，一家做在线编程教育的公司，现在也是三七其中的一个事业群。前端加上我有8个人，在我来之前主要是以vue为主，目前的话vue和react都有使用。 1、制定了前端开发标准和规范2、短链3、引入sentry上报客户端异常和错误4、微信开发本地授权问题5、耕子3.0重构项目使用react hooks和ts6、提出">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-04-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-27T06:08:26.870Z">
+<meta property="article:published_time" content="2022-01-04T03:05:48.381Z">
+<meta property="article:modified_time" content="2022-01-04T03:05:48.381Z">
 <meta property="article:author" content="痕迹_Mark">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://zhjgh.github.io/2021/05/01/%E3%80%8C%E4%B8%AD%E9%AB%98%E7%BA%A7%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E3%80%8DJavaScript%20%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E6%97%A0%E6%95%8C%E7%A7%98%E7%B1%8D/">
+<link rel="canonical" href="https://zhjgh.github.io/2022/01/04/%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/">
 
 
 <script class="page-configurations">
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>「中高级前端面试」JavaScript 手写代码无敌秘籍 | 爱折腾的前端</title>
+  <title>自我介绍 | 爱折腾的前端</title>
   
 
 
@@ -182,7 +182,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -194,7 +194,6 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-实现一个-new-操作符"><span class="nav-number">1.</span> <span class="nav-text">1. 实现一个 new 操作符</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -208,7 +207,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -246,7 +245,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhjgh.github.io/2021/05/01/%E3%80%8C%E4%B8%AD%E9%AB%98%E7%BA%A7%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E3%80%8DJavaScript%20%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E6%97%A0%E6%95%8C%E7%A7%98%E7%B1%8D/">
+    <link itemprop="mainEntityOfPage" href="https://zhjgh.github.io/2022/01/04/%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -259,7 +258,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          「中高级前端面试」JavaScript 手写代码无敌秘籍
+          自我介绍
         </h1>
 
         <div class="post-meta">
@@ -269,15 +268,8 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-01 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-01T00:00:00+08:00">2021-05-01</time>
+              <time title="创建时间：2022-01-04 11:05:48" itemprop="dateCreated datePublished" datetime="2022-01-04T11:05:48+08:00">2022-01-04</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-27 14:08:26" itemprop="dateModified" datetime="2021-12-27T14:08:26+08:00">2021-12-27</time>
-              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -297,7 +289,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-实现一个-new-操作符"><a href="#1-实现一个-new-操作符" class="headerlink" title="1. 实现一个 new 操作符"></a>1. 实现一个 new 操作符</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">New</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> res = &#123;&#125;;</span><br><span class="line">  <span class="keyword">if</span> (func.prototype !== <span class="literal">null</span>) &#123;</span><br><span class="line">    res.__proto__ = func.prototype;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> ret = func.apply(res, <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>));</span><br><span class="line">  <span class="keyword">if</span> ((<span class="keyword">typeof</span> ret === <span class="string">"object"</span> || <span class="keyword">typeof</span> ret === <span class="string">"function"</span>) &amp;&amp; ret !== <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = New(A, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="comment">// equals to</span></span><br><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> A(<span class="number">1</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+        <p>面试官您好，我叫张鸿杰。目前在三七互娱妙小程担任前端开发主管。<br>妙小程是三七在2020年收购的，一家做在线编程教育的公司，现在也是三七其中的一个事业群。<br>前端加上我有8个人，在我来之前主要是以vue为主，目前的话vue和react都有使用。</p>
+<p>1、制定了前端开发标准和规范<br>2、短链<br>3、引入sentry上报客户端异常和错误<br>4、微信开发本地授权问题<br>5、耕子3.0重构项目使用react hooks和ts<br>6、提出yapi代替swagger<br>7、python编辑器抽离，作为一个单独的进程在老师和学生客户端调用，支持打开多个tab</p>
 
     </div>
 
@@ -312,11 +305,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2021/06/12/ES6%E5%9F%BA%E7%A1%80/" rel="next" title="ES6基础">
-      ES6基础 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/01/02/JS%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="prev" title="JS模块化">
+      <i class="fa fa-chevron-left"></i> JS模块化
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -368,7 +361,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
