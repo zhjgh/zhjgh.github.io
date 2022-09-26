@@ -273,7 +273,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-16 16:27:41" itemprop="dateModified" datetime="2022-01-16T16:27:41+08:00">2022-01-16</time>
+                <time title="修改时间：2022-09-26 10:23:16" itemprop="dateModified" datetime="2022-09-26T10:23:16+08:00">2022-09-26</time>
               </span>
 
           
@@ -287,175 +287,204 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <ol>
-<li>使用redux的好处，以及和mobx的区别？</li>
-</ol>
-<p>redux的三大优势：</p>
+          <h2 id="Class组件和函数组件的区别"><a href="#Class组件和函数组件的区别" class="headerlink" title="Class组件和函数组件的区别"></a>Class组件和函数组件的区别</h2><p><strong>Class组件</strong></p>
 <ul>
+<li>有组件实例</li>
+<li>有生命周期</li>
+<li>有state和setState</li>
+</ul>
+<p><strong>函数组件</strong></p>
+<ul>
+<li>没有组件实例</li>
+<li>没有生命周期</li>
+<li>没有state和setState，只能接收props</li>
+<li>函数组件是一个纯函数，执行完立即销毁，无法存储state</li>
+</ul>
+<p><strong>Class组件存在的问题</strong></p>
+<ul>
+<li>大型组件很难拆分和重构，变得难以测试</li>
+<li>相同业务逻辑分散到各个方法中，可能会变得混乱</li>
+<li>复用逻辑可能变得复杂，比如 HOC、Render Props</li>
+</ul>
+<p>所以 react 中更提倡函数式编程，因为函数更灵活，更易拆分，但函数组件太简单，所以出现了hook，hook就是用来增强函数组件功能的。</p>
+<h2 id="useState为什么不能放到条件语句里面？"><a href="#useState为什么不能放到条件语句里面？" class="headerlink" title="useState为什么不能放到条件语句里面？"></a>useState为什么不能放到条件语句里面？</h2><p>react通过单链表来管理hooks。update阶段，hooks函数执行的顺序是不变的，就可以根据这个链表拿到当前hooks对应的Hook对象。如果将useState写在条件判断中，可能会导致顺序错乱，导致当前hooks拿到的不是自己对应的Hook对象。</p>
+<h2 id="实现一个Promise-all"><a href="#实现一个Promise-all" class="headerlink" title="实现一个Promise.all"></a>实现一个Promise.all</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">promiseAll</span>(<span class="params">promises</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolved, rejected</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> resultCount = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">let</span> results = <span class="keyword">new</span> <span class="built_in">Array</span>(promises.length);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; promises.length; i++)&#123;</span><br><span class="line">            promises[i].then(<span class="function"><span class="params">value</span> =&gt;</span> &#123;</span><br><span class="line">                resultCount++</span><br><span class="line">                results[i] = value</span><br><span class="line">                <span class="keyword">if</span>(resultCount === promises.length)&#123;</span><br><span class="line">                    <span class="keyword">return</span> resolved(results)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, error =&gt; &#123;</span><br><span class="line">                rejected(error)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用Redux的好处，以及和Mobx的区别"><a href="#使用Redux的好处，以及和Mobx的区别" class="headerlink" title="使用Redux的好处，以及和Mobx的区别"></a>使用Redux的好处，以及和Mobx的区别</h2><p><strong>Redux的三大优势：</strong></p>
+<ol>
 <li>单一数据源</li>
 <li>状态是只读的</li>
 <li>状态的改变只能通过纯函数改变</li>
-</ul>
-<p>redux和mobx区别:<br>redux: 函数式编程思想、单一store，plan object保存数据，手动处理变化后的操作、使用不可变状态，意味着状态只读，使用纯函数修改，返回的是一个新的状态、提供时间回溯的开发工具。<br>mobx:面向对象思维、多个store、observable自动响应变化操作、mobx状态可变，直接修改、更多的抽象和封装，调试复杂，结果难以预测。</p>
-<ol start="2">
-<li><p>class组件和函数组件的区别？</p>
-</li>
-<li><p>useState为什么不能放到条件语句里面？<br>React通过单链表来管理Hooks。update 阶段，每次调用 useState，链表就会执行 next 向后移动一步。如果将 useState 写在条件判断中，假设条件判断不成立，没有执行里面的 useState 方法，会导致接下来所有的 useState 的取值出现偏移，从而导致异常发生。</p>
-</li>
-<li><p>实现一个Promise.all</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">promiseAll</span>(<span class="params">promises</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolved, rejected</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> resultCount = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">let</span> results = <span class="keyword">new</span> <span class="built_in">Array</span>(promises.length);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; promises.length; i++)&#123;</span><br><span class="line">            promises[i].then(<span class="function"><span class="params">value</span> =&gt;</span> &#123;</span><br><span class="line">                resultCount++</span><br><span class="line">                results[i] = value</span><br><span class="line">                <span class="keyword">if</span>(resultCount === promises.length)&#123;</span><br><span class="line">                    <span class="keyword">return</span> resolved(results)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, error =&gt; &#123;</span><br><span class="line">                rejected(error)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>React SSR是怎么实现的？</p>
-</li>
 </ol>
-<ol start="6">
-<li>有用过代码规范相关的吗？Eslint 和 Prettier 冲突怎么解决？<br><a href="https://www.jianshu.com/p/b3a693cdcee9" target="_blank" rel="noopener">https://www.jianshu.com/p/b3a693cdcee9</a></li>
+<p><strong>Redux和Mobx区别：</strong></p>
+<ol>
+<li>Redux将数据保存在单一的store中；而Mobx将数据保存在分散的多个store中</li>
+<li>Redux使用简单对象保存数据，需要手动处理变化后的操作；Mobx使用observable保存数据，数据变化后自动处理响应的操作。</li>
+<li>Redux使用的是不可变状态，意味着状态只是只读的，不能直接去修改它，而是应该通过纯函数改变返回一个新的状态；Mobx中的状态是可变的，可以直接对其进行修改</li>
+<li>Redux比较复杂，因为其中的函数式编程思想掌握起来不是那么容易，同时需要借助一系列的中间件来处理异步和副作用；Mobx相对比较简单，在其中有很多的抽象，使用的更多是面向对象的思维</li>
+<li>Redux提供可以进行时间回溯的开发工具，同时其纯函数以及更少的抽象，调试比较容易；Mobx中有更多的抽象和封装，调试起来比较复杂，同时结果也更难以预测</li>
 </ol>
-<ol start="7">
-<li>实现一个数组转树形结构的函数<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> data = [</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">text</span>: <span class="string">'t1'</span>, <span class="attr">parentId</span>: <span class="number">0</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">11</span>, <span class="attr">text</span>: <span class="string">'t11'</span>, <span class="attr">parentId</span>: <span class="number">1</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">12</span>, <span class="attr">text</span>: <span class="string">'t12'</span>, <span class="attr">parentId</span>: <span class="number">1</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">text</span>: <span class="string">'t2'</span>, <span class="attr">parentId</span>: <span class="number">0</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">21</span>, <span class="attr">text</span>: <span class="string">'t21'</span>, <span class="attr">parentId</span>: <span class="number">2</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">text</span>: <span class="string">'t3'</span>, <span class="attr">parentId</span>: <span class="number">0</span> &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">arrToTree</span>(<span class="params">data, id, parentId, children</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> cloneData = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(data))</span><br><span class="line">  <span class="keyword">return</span> cloneData.filter(<span class="function"><span class="params">father</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> newArr = cloneData.filter(<span class="function"><span class="params">child</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> father[id] === child[parentId]</span><br><span class="line">    &#125;)</span><br><span class="line">    father[children] = newArr</span><br><span class="line">    <span class="keyword">return</span> father[parentId] === <span class="number">0</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> treeData = arrToTree(data, <span class="string">'id'</span>, <span class="string">'parentId'</span>, <span class="string">'children'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(treeData))</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="string">"id"</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">"text"</span>: <span class="string">"t1"</span>,</span><br><span class="line">      <span class="string">"parentId"</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="string">"children"</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">              <span class="string">"id"</span>: <span class="number">11</span>,</span><br><span class="line">              <span class="string">"text"</span>: <span class="string">"t11"</span>,</span><br><span class="line">              <span class="string">"parentId"</span>: <span class="number">1</span>,</span><br><span class="line">              <span class="string">"children"</span>: []</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">              <span class="string">"id"</span>: <span class="number">12</span>,</span><br><span class="line">              <span class="string">"text"</span>: <span class="string">"t12"</span>,</span><br><span class="line">              <span class="string">"parentId"</span>: <span class="number">1</span>,</span><br><span class="line">              <span class="string">"children"</span>: []</span><br><span class="line">          &#125;</span><br><span class="line">      ]</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="string">"id"</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="string">"text"</span>: <span class="string">"t2"</span>,</span><br><span class="line">      <span class="string">"parentId"</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="string">"children"</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">              <span class="string">"id"</span>: <span class="number">21</span>,</span><br><span class="line">              <span class="string">"text"</span>: <span class="string">"t21"</span>,</span><br><span class="line">              <span class="string">"parentId"</span>: <span class="number">2</span>,</span><br><span class="line">              <span class="string">"children"</span>: []</span><br><span class="line">          &#125;</span><br><span class="line">      ]</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="string">"id"</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="string">"text"</span>: <span class="string">"t3"</span>,</span><br><span class="line">      <span class="string">"parentId"</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="string">"children"</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ol>
-<ol start="8">
-<li>有没有做过性能优化相关的？</li>
-</ol>
-<ol start="9">
-<li><p>实现一个深拷贝</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deepClone</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">isObject</span>(<span class="params">o</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">typeof</span> o === <span class="string">'object'</span> || <span class="keyword">typeof</span> o === <span class="string">'function'</span>) &amp;&amp; o !== <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!isObject(obj))&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'非对象'</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> isArray = <span class="built_in">Array</span>.isArray(obj)</span><br><span class="line">    <span class="keyword">let</span> newObj = isArray ? [...obj] : &#123;...obj&#125;</span><br><span class="line">    <span class="built_in">Reflect</span>.ownKeys(newObj).forEach(<span class="function"><span class="params">key</span> =&gt;</span> &#123;</span><br><span class="line">        newObj[key] = isObject(obj[key]) ? deepClone(obj[key]) : obj[key]</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> newObj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>讲一讲微前端是怎么实现的？怎么独立部署？子应用通信怎么做？</p>
-</li>
-</ol>
-<ol start="11">
-<li><p>webpack构建流程是怎样的？<br>Webpack在启动后，会从Entry开始，递归解析Entry依赖的所有Module，每找到一个Module，就会根据Module.rules里配置的Loader规则进行相应的转换处理，对Module进行转换后，再解析出当前Module依赖的Module，这些Module会以Entry为单位进行分组，即为一个Chunk。因此一个Chunk，就是一个Entry及其所有依赖的Module合并的结果。最后Webpack会将所有的Chunk转换成文件输出Output。在整个构建流程中，Webpack会在恰当的时机执行Plugin里定义的逻辑，从而完成Plugin插件的优化任务。</p>
-</li>
-<li><p>webpack loader和plugin的原理和区别？</p>
-</li>
-</ol>
+<h2 id="React-SSR是怎么实现的？"><a href="#React-SSR是怎么实现的？" class="headerlink" title="React SSR是怎么实现的？"></a>React SSR是怎么实现的？</h2><p>所谓同构，通俗的讲，就是一套 React 代码在服务器上运行一遍，到达浏览器又运行一遍。 服务端渲染完成页面结构，客户端渲染绑定事件。</p>
 <ul>
-<li>Loader用于对模块文件进行编译转换和加载处理，在module.rules数组中进行配置，它用于告诉Webpack在遇到哪些文件时使用哪些Loader去加载和转换</li>
-<li>Plugin用于扩展Webpack功能，实现原理是在构建流程里注入钩子函数。在plugins数组中进行配置。</li>
+<li>服务端执行流程：在服务端使用react-dom/server下的renderToString将React组件转化为string，拼接在html中进行返回。此时html中不包含元素对应的事件。打包时把react-dom下的hydrate的逻辑打包到js中，拼接在html中作为script标签返回，提供给客户端运行使用</li>
+<li>浏览器执行流程：请求html，渲染html返回的页面内容并下载js文件，此时页面显示元素但不可交互，运行js中的ReactDom.hydrate给页面元素绑定事件，页面可交互。</li>
 </ul>
-<ol start="13">
-<li>webpack 怎么做分包？</li>
-<li>webpack 性能优化</li>
-<li>react diff的复杂度，以及react diff的原理？</li>
-<li>谈谈react hooks的优缺点？</li>
-</ol>
-<ol start="17">
-<li>从输入url到页面渲染经过了哪些步骤？</li>
-</ol>
-<ol start="18">
-<li>知道BFC吗？使用场景有哪些？</li>
-</ol>
-<p>BFC 即 Block Formatting Contexts (块级格式化上下文)。<br>具有 BFC 特性的元素可以看作是隔离了的独立容器，容器里面的元素不会在布局上影响到外面的元素，并且 BFC 具有普通容器所没有的一些特性。通俗一点来讲，可以把 BFC 理解为一个封闭的大箱子，箱子内部的元素无论如何翻江倒海，都不会影响到外部。</p>
-<ol start="19">
-<li>怎么判断是否时数组？</li>
-<li>页面卡顿怎么去定位？</li>
-<li>数组有10万个数据，取第一个和取第10万个的耗时多久？</li>
-<li>工作中遇到最难的问题？</li>
-<li>写个防抖和节流函数？<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@desc </span>函数防抖</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>func 函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>wait 延迟执行毫秒数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>immediate true 表立即执行，false 表非立即执行</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">func,wait,immediate</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> timeout;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> context = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">let</span> args = <span class="built_in">arguments</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (timeout) clearTimeout(timeout);</span><br><span class="line">        <span class="keyword">if</span> (immediate) &#123;</span><br><span class="line">            <span class="keyword">var</span> callNow = !timeout;</span><br><span class="line">            timeout = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                timeout = <span class="literal">null</span>;</span><br><span class="line">            &#125;, wait)</span><br><span class="line">            <span class="keyword">if</span> (callNow) func.apply(context, args)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            timeout = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                func.apply(context, args)</span><br><span class="line">            &#125;, wait);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@desc </span>函数节流</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>func 函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>wait 延迟执行毫秒数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>type 1 表时间戳版，2 表定时器版</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">func, wait ,type</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(type===<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> previous = <span class="number">0</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(type===<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> timeout;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> context = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">let</span> args = <span class="built_in">arguments</span>;</span><br><span class="line">        <span class="keyword">if</span>(type===<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">let</span> now = <span class="built_in">Date</span>.now();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (now - previous &gt; wait) &#123;</span><br><span class="line">                func.apply(context, args);</span><br><span class="line">                previous = now;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(type===<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span> (!timeout) &#123;</span><br><span class="line">                timeout = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                    timeout = <span class="literal">null</span>;</span><br><span class="line">                    func.apply(context, args)</span><br><span class="line">                &#125;, wait)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="有用过代码规范相关的吗？Eslint-和-Prettier-冲突怎么解决？"><a href="#有用过代码规范相关的吗？Eslint-和-Prettier-冲突怎么解决？" class="headerlink" title="有用过代码规范相关的吗？Eslint 和 Prettier 冲突怎么解决？"></a>有用过代码规范相关的吗？Eslint 和 Prettier 冲突怎么解决？</h2><p><a href="https://www.jianshu.com/p/b3a693cdcee9" target="_blank" rel="noopener">https://www.jianshu.com/p/b3a693cdcee9</a></p>
+<h2 id="实现一个数组转树形结构的函数"><a href="#实现一个数组转树形结构的函数" class="headerlink" title="实现一个数组转树形结构的函数"></a>实现一个数组转树形结构的函数</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> data = [</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">text</span>: <span class="string">'t1'</span>, <span class="attr">parentId</span>: <span class="number">0</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">11</span>, <span class="attr">text</span>: <span class="string">'t11'</span>, <span class="attr">parentId</span>: <span class="number">1</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">12</span>, <span class="attr">text</span>: <span class="string">'t12'</span>, <span class="attr">parentId</span>: <span class="number">1</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">text</span>: <span class="string">'t2'</span>, <span class="attr">parentId</span>: <span class="number">0</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">21</span>, <span class="attr">text</span>: <span class="string">'t21'</span>, <span class="attr">parentId</span>: <span class="number">2</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">text</span>: <span class="string">'t3'</span>, <span class="attr">parentId</span>: <span class="number">0</span> &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">arrToTree</span>(<span class="params">data, id, parentId, children</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> cloneData = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(data))</span><br><span class="line">  <span class="keyword">return</span> cloneData.filter(<span class="function"><span class="params">father</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> newArr = cloneData.filter(<span class="function"><span class="params">child</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> father[id] === child[parentId]</span><br><span class="line">    &#125;)</span><br><span class="line">    father[children] = newArr</span><br><span class="line">    <span class="keyword">return</span> father[parentId] === <span class="number">0</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> treeData = arrToTree(data, <span class="string">'id'</span>, <span class="string">'parentId'</span>, <span class="string">'children'</span>)</span><br></pre></td></tr></table></figure>
 
-
+<h2 id="React性能优化"><a href="#React性能优化" class="headerlink" title="React性能优化"></a>React性能优化</h2><ul>
+<li><p>使用React.Memo来缓存组件</p>
+<blockquote>
+<p>提升应用程序性能的一种方法是实现memoization。Memoization是一种优化技术，主要通过存储昂贵的函数调用的结果，并在再次发生相同的输入时返回缓存的结果，以此来加速程序。父组件的每次状态更新，都会导致子组件重新渲染，即使传入子组件的状态没有变化，为了减少重复渲染，我们可以使用React.memo来缓存组件，这样只有当传入组件的状态值发生变化时才会重新渲染。如果传入相同的值，则返回缓存的组件。示例如下：</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> React.memo(<span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;&#123;props.value&#125;&lt;<span class="regexp">/div&gt;  </span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;);</span></span><br></pre></td></tr></table></figure>
 </li>
+<li><p>使用useMemo缓存大量的计算</p>
+<blockquote>
+<p>有时渲染是不可避免的，但如果您的组件是一个功能组件，重新渲染会导致每次都调用大型计算函数，这是非常消耗性能的，我们可以使用新的useMemo钩子来“记忆”这个计算函数的计算结果。这样只有传入的参数发生变化后，该计算函数才会重新调用计算新的结果。通过这种方式，您可以使用从先前渲染计算的结果来挽救昂贵的计算耗时。总体目标是减少JavaScript在呈现组件期间必须执行的工作量，以便主线程被阻塞的时间更短。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 避免这样做</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Component</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> someProp = heavyCalculation(props.item);</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">AnotherComponent</span> <span class="attr">someProp</span>=<span class="string">&#123;someProp&#125;</span> /&gt;</span></span> </span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="comment">// 只有 `props.item` 改变时someProp的值才会被重新计算</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Component</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> someProp = useMemo(<span class="function"><span class="params">()</span> =&gt;</span> heavyCalculation(props.item), [props.item]);</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">AnotherComponent</span> <span class="attr">someProp</span>=<span class="string">&#123;someProp&#125;</span> /&gt;</span></span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>避免使用内联对象</p>
+<blockquote>
+<p>使用内联对象时，react会在每次渲染时重新创建对此对象的引用，这会导致接收此对象的组件将其视为不同的对象,因此，该组件对于prop的浅层比较始终返回false,导致组件一直重新渲染。许多人使用的内联样式的间接引用，就会使组件重新渲染，可能会导致性能问题。为了解决这个问题，我们可以保证该对象只初始化一次，指向相同引用。另外一种情况是传递一个对象，同样会在渲染时创建不同的引用，也有可能导致性能问题，我们可以利用ES6扩展运算符将传递的对象解构。这样组件接收到的便是基本类型的props，组件通过浅层比较发现接受的prop没有变化，则不会重新渲染。示例如下：</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Don't do this!</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Component</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> aProp = &#123; <span class="attr">someProp</span>: <span class="string">'someValue'</span> &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">AnotherComponent</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">margin:</span> <span class="attr">0</span> &#125;&#125; <span class="attr">aProp</span>=<span class="string">&#123;aProp&#125;</span> /&gt;</span></span>  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Do this instead :)</span></span><br><span class="line"><span class="keyword">const</span> styles = &#123; <span class="attr">margin</span>: <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Component</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> aProp = &#123; <span class="attr">someProp</span>: <span class="string">'someValue'</span> &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">AnotherComponent</span> <span class="attr">style</span>=<span class="string">&#123;styles&#125;</span> &#123;<span class="attr">...aProp</span>&#125; /&gt;</span></span>  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>避免使用匿名函数</p>
+<blockquote>
+<p>虽然匿名函数是传递函数的好方法（特别是需要用另一个prop作为参数调用的函数），但它们在每次渲染上都有不同的引用。这类似于上面描述的内联对象。为了保持对作为prop传递给React组件的函数的相同引用，您可以将其声明为类方法（如果您使用的是基于类的组件）或使用useCallback钩子来帮助您保持相同的引用（如果您使用功能组件）。当然，有时内联匿名函数是最简单的方法，实际上并不会导致应用程序出现性能问题。这可能是因为在一个非常“轻量级”的组件上使用它，或者因为父组件实际上必须在每次props更改时重新渲染其所有内容。因此不用关心该函数是否是不同的引用，因为无论如何，组件都会重新渲染。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 避免这样做</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Component</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">AnotherComponent</span> <span class="attr">onChange</span>=<span class="string">&#123;()</span> =&gt;</span> props.callback(props.id)&#125; /&gt;</span>  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 优化方法一</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Component</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> handleChange = useCallback(<span class="function"><span class="params">()</span> =&gt;</span> props.callback(props.id), [props.id]);</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">AnotherComponent</span> <span class="attr">onChange</span>=<span class="string">&#123;handleChange&#125;</span> /&gt;</span></span>  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 优化方法二</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Component</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  handleChange = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">   <span class="keyword">this</span>.props.callback(<span class="keyword">this</span>.props.id) </span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">AnotherComponent</span> <span class="attr">onChange</span>=<span class="string">&#123;this.handleChange&#125;</span> /&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>延迟加载不是立即需要的组件</p>
+<blockquote>
+<p>延迟加载实际上不可见（或不是立即需要）的组件，React加载的组件越少，加载组件的速度就越快。因此，如果您的初始渲染感觉相当粗糙，则可以在初始安装完成后通过在需要时加载组件来减少加载的组件数量。同时，这将允许用户更快地加载您的平台/应用程序。最后，通过拆分初始渲染，您将JS工作负载拆分为较小的任务，这将为您的页面提供响应的时间。这可以使用新的React.Lazy和React.Suspense轻松完成。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 延迟加载不是立即需要的组件</span></span><br><span class="line"><span class="keyword">const</span> MUITooltip = React.lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'@material-ui/core/Tooltip'</span>));</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Tooltip</span>(<span class="params">&#123; children, title &#125;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;React.Suspense fallback=&#123;children&#125;&gt;</span><br><span class="line">      &lt;MUITooltip title=&#123;title&#125;&gt;</span><br><span class="line">        &#123;children&#125;</span><br><span class="line">      &lt;<span class="regexp">/MUITooltip&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>React.Suspense&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Component</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Tooltip title=&#123;props.title&#125;&gt;</span><br><span class="line">      &lt;AnotherComponent /&gt;</span><br><span class="line">    &lt;<span class="regexp">/Tooltip&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调整CSS而不是强制组件加载和卸载</p>
+<blockquote>
+<p>渲染成本很高，尤其是在需要更改DOM时。每当你有某种手风琴或标签功能，例如想要一次只能看到一个项目时，你可能想要卸载不可见的组件，并在它变得可见时将其重新加载。如果加载/卸载的组件“很重”，则此操作可能非常消耗性能并可能导致延迟。在这些情况下，最好通过CSS隐藏它，同时将内容保存到DOM。尽管这种方法并不是万能的，因为安装这些组件可能会导致问题（即组件与窗口上的无限分页竞争），但我们应该选择在不是这种情况下使用调整CSS的方法。另外一点，将不透明度调整为0对浏览器的成本消耗几乎为0（因为它不会导致重排），并且应尽可能优先于更该visibility 和 display。有时在保持组件加载的同时通过CSS隐藏可能是有益的，而不是通过卸载来隐藏。对于具有显著的加载/卸载时序的重型组件而言，这是有效的性能优化手段。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 避免对大型的组件频繁对加载和卸载</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Component</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [view, setView] = useState(<span class="string">'view1'</span>);</span><br><span class="line">  <span class="keyword">return</span> view === <span class="string">'view1'</span> ? <span class="xml"><span class="tag">&lt;<span class="name">SomeComponent</span> /&gt;</span></span> : <span class="xml"><span class="tag">&lt;<span class="name">AnotherComponent</span> /&gt;</span></span>  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用该方式提升性能和速度</span></span><br><span class="line"><span class="keyword">const</span> visibleStyles = &#123; <span class="attr">opacity</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> hiddenStyles = &#123; <span class="attr">opacity</span>: <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Component</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [view, setView] = useState(<span class="string">'view1'</span>);</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;React.Fragment&gt;</span><br><span class="line">      &lt;SomeComponent style=&#123;view === <span class="string">'view1'</span> ? visibleStyles : hiddenStyles&#125;&gt;</span><br><span class="line">      &lt;AnotherComponent style=&#123;view !== <span class="string">'view1'</span> ? visibleStyles : hiddenStyles&#125;&gt;</span><br><span class="line">    &lt;<span class="regexp">/React.Fragment&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用React.Fragment避免添加额外的DOM</p>
+</li>
+<li><p>虚拟化长列表</p>
+<blockquote>
+<p>react-window 或 react-virtualized</p>
+</blockquote>
+</li>
+<li><p>不可变数据</p>
+<blockquote>
+<p>Immer 或 immutability-helper</p>
+</blockquote>
+</li>
+<li><p>使用生产版本</p>
+</li>
+</ul>
+<h2 id="实现一个深拷贝"><a href="#实现一个深拷贝" class="headerlink" title="实现一个深拷贝"></a>实现一个深拷贝</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deepClone</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">isObject</span>(<span class="params">o</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">typeof</span> o === <span class="string">'object'</span> || <span class="keyword">typeof</span> o === <span class="string">'function'</span>) &amp;&amp; o !== <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!isObject(obj))&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'非对象'</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> isArray = <span class="built_in">Array</span>.isArray(obj)</span><br><span class="line">    <span class="keyword">let</span> newObj = isArray ? [...obj] : &#123;...obj&#125;</span><br><span class="line">    <span class="built_in">Reflect</span>.ownKeys(newObj).forEach(<span class="function"><span class="params">key</span> =&gt;</span> &#123;</span><br><span class="line">        newObj[key] = isObject(obj[key]) ? deepClone(obj[key]) : obj[key]</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> newObj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="微前端是怎么实现的？怎么独立部署？子应用通信怎么做？"><a href="#微前端是怎么实现的？怎么独立部署？子应用通信怎么做？" class="headerlink" title="微前端是怎么实现的？怎么独立部署？子应用通信怎么做？"></a>微前端是怎么实现的？怎么独立部署？子应用通信怎么做？</h2><h2 id="Webpack构建流程"><a href="#Webpack构建流程" class="headerlink" title="Webpack构建流程"></a>Webpack构建流程</h2><ol>
+<li>初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler</li>
+<li>编译：从 Entry 出发，针对每个 Module 串行调用对应的 Loader 去翻译文件的内容，再找到该 Module 依赖的 Module，递归地进行编译处理</li>
+<li>输出：将编译后的 Module 组合成 Chunk，将 Chunk 转换成文件，输出到文件系统中</li>
 </ol>
-<ol start="24">
-<li>http2的相关特性？</li>
-</ol>
-<ul>
+<p>在webpack运行的生命周期中会广播很多事件，plugin可以监听这些事件，在合适的时机通过webpack提供的api改变输出结果。</p>
+<h2 id="Loader-和-Plugin-的原理和区别"><a href="#Loader-和-Plugin-的原理和区别" class="headerlink" title="Loader 和 Plugin 的原理和区别"></a>Loader 和 Plugin 的原理和区别</h2><ul>
+<li>Loader用于对模块文件进行编译转换和加载处理，在module.rules数组中进行配置，它用于告诉Webpack在遇到哪些文件时使用哪些Loader去加载和转换。</li>
+<li>Plugin用于扩展Webpack功能，实现原理是在构建流程里注入钩子函数，在合适的时机通过webpack提供的api改变输出结果。在plugins数组中进行配置。</li>
+</ul>
+<h2 id="webpack-怎么做分包？"><a href="#webpack-怎么做分包？" class="headerlink" title="webpack 怎么做分包？"></a>webpack 怎么做分包？</h2><h2 id="webpack-性能优化"><a href="#webpack-性能优化" class="headerlink" title="webpack 性能优化"></a>webpack 性能优化</h2><h2 id="react-diff的复杂度，以及react-diff的原理？"><a href="#react-diff的复杂度，以及react-diff的原理？" class="headerlink" title="react diff的复杂度，以及react diff的原理？"></a>react diff的复杂度，以及react diff的原理？</h2><h2 id="react-hooks的优缺点？"><a href="#react-hooks的优缺点？" class="headerlink" title="react hooks的优缺点？"></a>react hooks的优缺点？</h2><h2 id="从输入url到页面渲染经过了哪些步骤？"><a href="#从输入url到页面渲染经过了哪些步骤？" class="headerlink" title="从输入url到页面渲染经过了哪些步骤？"></a>从输入url到页面渲染经过了哪些步骤？</h2><h2 id="知道BFC吗？使用场景有哪些？"><a href="#知道BFC吗？使用场景有哪些？" class="headerlink" title="知道BFC吗？使用场景有哪些？"></a>知道BFC吗？使用场景有哪些？</h2><p>BFC 即 Block Formatting Contexts (块级格式化上下文)。<br>具有 BFC 特性的元素可以看作是隔离了的独立容器，容器里面的元素不会在布局上影响到外面的元素，并且 BFC 具有普通容器所没有的一些特性。通俗一点来讲，可以把 BFC 理解为一个封闭的大箱子，箱子内部的元素无论如何翻江倒海，都不会影响到外部。</p>
+<h2 id="怎么判断是否是数组？"><a href="#怎么判断是否是数组？" class="headerlink" title="怎么判断是否是数组？"></a>怎么判断是否是数组？</h2><p><strong>用instanceof判断</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [];</span><br><span class="line"><span class="built_in">console</span>.log(a <span class="keyword">instanceof</span> <span class="built_in">Array</span>); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>用Object的toString方法判断</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [];</span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(a); <span class="comment">// "[object Array]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.apply(a); <span class="comment">// "[object Array]"</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>用Array对象的isArray方法判断</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [];</span><br><span class="line"><span class="built_in">Array</span>.isArray(a); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="页面卡顿怎么去定位？"><a href="#页面卡顿怎么去定位？" class="headerlink" title="页面卡顿怎么去定位？"></a>页面卡顿怎么去定位？</h2><h2 id="数组有10万个数据，取第一个和取第10万个的耗时多久？"><a href="#数组有10万个数据，取第一个和取第10万个的耗时多久？" class="headerlink" title="数组有10万个数据，取第一个和取第10万个的耗时多久？"></a>数组有10万个数据，取第一个和取第10万个的耗时多久？</h2><h2 id="工作中遇到最难的问题？"><a href="#工作中遇到最难的问题？" class="headerlink" title="工作中遇到最难的问题？"></a>工作中遇到最难的问题？</h2><h2 id="防抖和节流"><a href="#防抖和节流" class="headerlink" title="防抖和节流"></a>防抖和节流</h2><p><strong>防抖定义</strong></p>
+<p>防抖就是要延迟执行，你一直操作触发事件一直不执行，当你停止操作等待多少秒后才执行。</p>
+<p>也就是说不管事件触发频率有多高，一定在事件触发 n 秒后执行。如果在事件触发的 n 秒又触发了这个事件，那就以新事件的事件为准，n 秒后才执行。总之，要等你触发完事件 n 秒内不再触发事件，它才执行。</p>
+<p><strong>手写防抖</strong></p>
+<blockquote>
+<p>根据定义，我们知道要在时间 n 秒后执行，那么我们就用定时器来实现：</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">func, wait</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> timer = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">...args</span>)</span>&#123;</span><br><span class="line">        clearTimeout(timer);</span><br><span class="line">        timer = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            func.apply(<span class="keyword">this</span>, args)</span><br><span class="line">        &#125;, wait)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码很简单，即当还在触发事件时，就清除 timer，使其在 n 秒后执行，但此写法首次不会立即执行，为其健壮性，需加上判断是否第一次执行的第三个参数 flag，判断其是否立即执行。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">event, wait, flag</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> timer = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">...args</span>) </span>&#123;</span><br><span class="line">        clearTimeout(timer)</span><br><span class="line">        <span class="keyword">if</span> (!timer &amp;&amp; flag) &#123;</span><br><span class="line">            event.apply(<span class="keyword">this</span>, args)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            timer = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                event.apply(<span class="keyword">this</span>, args)</span><br><span class="line">            &#125;, wait)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>防抖场景</strong></p>
+<p>窗口大小变化，调整样式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'resize'</span>, debounce(handleResize, <span class="number">200</span>))</span><br></pre></td></tr></table></figure>
+
+<p>搜索框，输入后300毫秒搜索</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">debounce(fetchSelectData, <span class="number">300</span>)</span><br></pre></td></tr></table></figure>
+
+<p>表单验证，输入 1000 毫秒后验证</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">debounce(validator, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>节流定义</strong><br>顾名思义，一节一节的流，就好似控制水阀，在事件不断触发的过程中，固定时间内执行一次事件。</p>
+<p><strong>手写节流</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">func, wait</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> pre = <span class="number">0</span>, timer = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">...args</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">Date</span>() - pre &gt; wait) &#123;</span><br><span class="line">            clearTimeout(timer);</span><br><span class="line">            timer = <span class="literal">null</span>;</span><br><span class="line">            pre = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">            func.apply(<span class="keyword">this</span>, args)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            timer = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                func.apply(<span class="keyword">this</span>, args)</span><br><span class="line">            &#125;, wait)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>节流场景</strong></p>
+<p>scroll 滚动</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'scroll'</span>, throttle(handleScroll, <span class="number">200</span>))</span><br></pre></td></tr></table></figure>
+
+<p>input 动态搜索</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">throttle(fetchInput, <span class="number">300</span>)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="http2的相关特性？"><a href="#http2的相关特性？" class="headerlink" title="http2的相关特性？"></a>http2的相关特性？</h2><ul>
 <li>二进制分帧（HTTP/2 将请求和响应数据分割为更小的帧，并且它们采用二进制编码）</li>
 <li>多路复用</li>
 <li>服务器推送</li>
 <li>头部压缩</li>
 </ul>
-<ol start="25">
-<li><p>viewport和移动端布局方案？</p>
-</li>
-<li><p>实现一个compose函数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">...fns</span>) </span>&#123; <span class="comment">// fns是传入的函数</span></span><br><span class="line">  <span class="keyword">const</span> fn = fns.pop();</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">...args</span>) =&gt;</span> &#123;</span><br><span class="line">    fn(...args);</span><br><span class="line">    <span class="keyword">if</span> (fns.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      compose(...fns);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>讲一下react fiber?</p>
-</li>
-<li><p>怎么优化h5加载速度？怎么实现h5页面秒开？</p>
-</li>
-<li><p>js bridge通信原理？</p>
-</li>
-<li><p>useReducer比redux好在哪里？</p>
-</li>
-<li><p>react setState 怎么获取到更新后的值？异步函数中为什么setState会立即更新？</p>
-</li>
-</ol>
+<h2 id="viewport和移动端布局方案？"><a href="#viewport和移动端布局方案？" class="headerlink" title="viewport和移动端布局方案？"></a>viewport和移动端布局方案？</h2><h2 id="实现一个compose函数"><a href="#实现一个compose函数" class="headerlink" title="实现一个compose函数"></a>实现一个compose函数</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">...fns</span>) </span>&#123; <span class="comment">// fns是传入的函数</span></span><br><span class="line">  <span class="keyword">const</span> fn = fns.pop();</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">...args</span>) =&gt;</span> &#123;</span><br><span class="line">    fn(...args);</span><br><span class="line">    <span class="keyword">if</span> (fns.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      compose(...fns);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhjgh.github.io/2022/01/02/Promise/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="痕迹_Mark">
-      <meta itemprop="description" content="前端博客网站">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱折腾的前端">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/02/Promise/" class="post-title-link" itemprop="url">Promise</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-01-02 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-02T00:00:00+08:00">2022-01-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-04 11:05:48" itemprop="dateModified" datetime="2022-01-04T11:05:48+08:00">2022-01-04</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><ol>
-<li>三种状态：分别是等待中（pending）, 完成了（resolved）,拒绝了（rejected）</li>
-<li>状态一旦从等待中变成其他状态就永远不能更改状态</li>
-<li>状态一旦改变不可取消</li>
-</ol>
-<h1 id="实现一个简易版-Promise"><a href="#实现一个简易版-Promise" class="headerlink" title="实现一个简易版 Promise"></a>实现一个简易版 Promise</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PENDING = <span class="string">'pending'</span></span><br><span class="line"><span class="keyword">const</span> RESOLVED = <span class="string">'resolved'</span></span><br><span class="line"><span class="keyword">const</span> REJECTED = <span class="string">'rejected'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyPromise</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> that = <span class="keyword">this</span></span><br><span class="line">    that.state = PENDING</span><br><span class="line">    that.value = <span class="literal">null</span></span><br><span class="line">    that.resolvedCallbacks = []</span><br><span class="line">    that.rejectedCallbacks = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">resolve</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(that.state === PENDING)&#123;</span><br><span class="line">            that.state = RESOLVED</span><br><span class="line">            that.value = value</span><br><span class="line">            that.resolvedCallbacks.map(<span class="function"><span class="params">cb</span> =&gt;</span> cb(that.value))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">reject</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(that.state === PENDING)&#123;</span><br><span class="line">            that.state = REJECTED</span><br><span class="line">            that.value = value</span><br><span class="line">            that.rejectedCallbacks.map(<span class="function"><span class="params">cb</span> =&gt;</span> cb(that.value))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        fn(resolve, reject)</span><br><span class="line">    &#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">        reject(e)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MyPromise.prototype.then = <span class="function"><span class="keyword">function</span>(<span class="params">onFulfilled, onRejected</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> that = <span class="keyword">this</span></span><br><span class="line">    onFulfilled = <span class="keyword">typeof</span> onFulfilled === <span class="string">'function'</span> ? onFulfilled : <span class="function"><span class="params">v</span> =&gt;</span> v</span><br><span class="line">    onRejected = <span class="keyword">typeof</span> onFulfilled === <span class="string">'function'</span> ? onRejected : <span class="function"><span class="params">err</span> =&gt;</span> &#123; <span class="keyword">throw</span> err &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(that.state === PENDING)&#123;</span><br><span class="line">        that.resolvedCallbacks.push(onFulfilled)</span><br><span class="line">        that.rejectedCallbacks.push(onRejected)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(that.state === RESOLVED)&#123;</span><br><span class="line">        onFulfilled(that.value)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(that.state === REJECTED)&#123;</span><br><span class="line">        onRejected(that.value)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> MyPromise(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        resolve(<span class="number">1</span>)</span><br><span class="line">    &#125;, <span class="number">0</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="params">value</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(value)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="React-Fiber"><a href="#React-Fiber" class="headerlink" title="React Fiber?"></a>React Fiber?</h2><p>React内部实现的一套状态更新机制。支持任务不同优先级，可中断与恢复，并且恢复后可以复用之前的中间状态。</p>
+<h2 id="怎么优化h5加载速度？怎么实现h5页面秒开？"><a href="#怎么优化h5加载速度？怎么实现h5页面秒开？" class="headerlink" title="怎么优化h5加载速度？怎么实现h5页面秒开？"></a>怎么优化h5加载速度？怎么实现h5页面秒开？</h2><p><a href="https://segmentfault.com/a/1190000041701111" target="_blank" rel="noopener">https://segmentfault.com/a/1190000041701111</a></p>
+<h2 id="js-bridge通信原理？"><a href="#js-bridge通信原理？" class="headerlink" title="js bridge通信原理？"></a>js bridge通信原理？</h2><h2 id="useReducer比redux好在哪里？"><a href="#useReducer比redux好在哪里？" class="headerlink" title="useReducer比redux好在哪里？"></a>useReducer比redux好在哪里？</h2><h2 id="HTTP-和-HTTPS-的区别"><a href="#HTTP-和-HTTPS-的区别" class="headerlink" title="HTTP 和 HTTPS 的区别"></a>HTTP 和 HTTPS 的区别</h2><p><a href="https://www.51cto.com/article/701195.html" target="_blank" rel="noopener">https://www.51cto.com/article/701195.html</a></p>
+<h2 id="HTTP-常见的状态码"><a href="#HTTP-常见的状态码" class="headerlink" title="HTTP 常见的状态码"></a>HTTP 常见的状态码</h2><p>1 表示消息<br>2 表示成功<br>3 表示重定向<br>4 表示请求错误<br>5 表示服务器错误</p>
+<p><strong>1xx（代表请求已被接受，需要继续处理。这类响应是临时响应，只包含状态行和某些可选的响应头信息，并以空行结束）</strong></p>
+<ul>
+<li>100（客户端继续发送请求，这是临时响应）：这个临时响应是用来通知客户端它的部分请求已经被服务器接收，且仍未被拒绝。客户端应当继续发送请求的剩余部分，或者如果请求已经完成，忽略这个响应。服务器必须在请求完成后向客户端发送一个最终响应</li>
+<li>101：服务器根据客户端的请求切换协议，主要用于websocket或http2升级</li>
+</ul>
+<p><strong>2xx（代表请求已成功被服务器接收、理解、并接受）</strong></p>
+<ul>
+<li>200（成功）：请求已成功，请求所希望的响应头或数据体将随此响应返回</li>
+<li>204（无内容）：服务器成功处理请求，但没有返回任何内容</li>
+</ul>
+<p><strong>3xx（表示要完成请求，需要进一步操作。 通常，这些状态代码用来重定向）</strong></p>
+<ul>
+<li>301（永久移动）：请求的网页已永久移动到新位置。 服务器返回此响应（对 GET 或 HEAD 请求的响应）时，会自动将请求者转到新位置</li>
+<li>302（临时移动）： 服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求</li>
+<li>304：协商缓存，告诉客户端有缓存，直接使用缓存中的数据，返回页面的只有头部信息，是没有内容部分</li>
+</ul>
+<p><strong>4xx（代表了客户端看起来可能发生了错误，妨碍了服务器的处理）</strong></p>
+<ul>
+<li>400（错误请求）： 服务器不理解请求的语法</li>
+<li>401（未授权）： 请求要求身份验证。 对于需要登录的网页，服务器可能返回此响应</li>
+<li>403（禁止）： 服务器拒绝请求</li>
+<li>404（未找到）： 服务器找不到请求的网页</li>
+<li>405（方法禁用）： 禁用请求中指定的方法</li>
+<li>408（请求超时）： 服务器等候请求时发生超时</li>
+</ul>
+<p><strong>5xx（表示服务器无法完成明显有效的请求。这类状态码代表了服务器在处理请求的过程中有错误或者异常状态发生）</strong></p>
+<ul>
+<li>500（服务器内部错误）：服务器遇到错误，无法完成请求</li>
+<li>501（尚未实施）：服务器不具备完成请求的功能。 例如，服务器无法识别请求方法时可能会返回此代码</li>
+<li>502（错误网关）： 服务器作为网关或代理，从上游服务器收到无效响应</li>
+<li>503（服务不可用）： 服务器目前无法使用（由于超载或停机维护）</li>
+<li>504（网关超时）： 服务器作为网关或代理，但是没有及时从上游服务器收到请求</li>
+</ul>
 
       
     </div>
@@ -622,6 +651,76 @@
 <li>然后使用Proxy将其包装起来，在返回给test</li>
 <li>此时test已经成为了一个Proxy实例，我们对其的操作，都会被Proxy拦截</li>
 </ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhjgh.github.io/2022/01/02/Promise/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="痕迹_Mark">
+      <meta itemprop="description" content="前端博客网站">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱折腾的前端">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/02/Promise/" class="post-title-link" itemprop="url">Promise</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-02 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-02T00:00:00+08:00">2022-01-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-04 11:05:48" itemprop="dateModified" datetime="2022-01-04T11:05:48+08:00">2022-01-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><ol>
+<li>三种状态：分别是等待中（pending）, 完成了（resolved）,拒绝了（rejected）</li>
+<li>状态一旦从等待中变成其他状态就永远不能更改状态</li>
+<li>状态一旦改变不可取消</li>
+</ol>
+<h1 id="实现一个简易版-Promise"><a href="#实现一个简易版-Promise" class="headerlink" title="实现一个简易版 Promise"></a>实现一个简易版 Promise</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PENDING = <span class="string">'pending'</span></span><br><span class="line"><span class="keyword">const</span> RESOLVED = <span class="string">'resolved'</span></span><br><span class="line"><span class="keyword">const</span> REJECTED = <span class="string">'rejected'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyPromise</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> that = <span class="keyword">this</span></span><br><span class="line">    that.state = PENDING</span><br><span class="line">    that.value = <span class="literal">null</span></span><br><span class="line">    that.resolvedCallbacks = []</span><br><span class="line">    that.rejectedCallbacks = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">resolve</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(that.state === PENDING)&#123;</span><br><span class="line">            that.state = RESOLVED</span><br><span class="line">            that.value = value</span><br><span class="line">            that.resolvedCallbacks.map(<span class="function"><span class="params">cb</span> =&gt;</span> cb(that.value))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">reject</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(that.state === PENDING)&#123;</span><br><span class="line">            that.state = REJECTED</span><br><span class="line">            that.value = value</span><br><span class="line">            that.rejectedCallbacks.map(<span class="function"><span class="params">cb</span> =&gt;</span> cb(that.value))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        fn(resolve, reject)</span><br><span class="line">    &#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">        reject(e)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MyPromise.prototype.then = <span class="function"><span class="keyword">function</span>(<span class="params">onFulfilled, onRejected</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> that = <span class="keyword">this</span></span><br><span class="line">    onFulfilled = <span class="keyword">typeof</span> onFulfilled === <span class="string">'function'</span> ? onFulfilled : <span class="function"><span class="params">v</span> =&gt;</span> v</span><br><span class="line">    onRejected = <span class="keyword">typeof</span> onFulfilled === <span class="string">'function'</span> ? onRejected : <span class="function"><span class="params">err</span> =&gt;</span> &#123; <span class="keyword">throw</span> err &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(that.state === PENDING)&#123;</span><br><span class="line">        that.resolvedCallbacks.push(onFulfilled)</span><br><span class="line">        that.rejectedCallbacks.push(onRejected)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(that.state === RESOLVED)&#123;</span><br><span class="line">        onFulfilled(that.value)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(that.state === REJECTED)&#123;</span><br><span class="line">        onRejected(that.value)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> MyPromise(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        resolve(<span class="number">1</span>)</span><br><span class="line">    &#125;, <span class="number">0</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="params">value</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(value)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
       
     </div>
